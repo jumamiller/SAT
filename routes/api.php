@@ -17,4 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix'=>'v1'], function (){
     //auth routes
     Route::prefix('auth')->group(base_path('routes/modules/auth.php'));
+    //address
+    Route::prefix('address')->group(base_path('routes/modules/address.php'));
+    //account
+    Route::prefix('account')->group(base_path('routes/modules/account.php'));
+    //kyc
+    Route::prefix('kyc')->group(base_path('routes/modules/kyc.php'));
+
+    //protected
+    Route::group(['middleware'=>'auth:api'],function(){
+        Route::prefix('users')->group(base_path('routes/modules/user.php'));
+    });
+
 });

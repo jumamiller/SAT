@@ -71,6 +71,10 @@ class User extends Authenticatable
      */
     public function address(): HasMany
     {
-        return $this->hasMany(KYC::class);
+        return $this->hasMany(Address::class);
+    }
+    public function account(): HasOne
+    {
+        return $this->hasOne(Account::class);
     }
 }
