@@ -18,18 +18,24 @@ class AccountController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        try{
+            $accounts=Account::with(['user','user.address','user.kyc'])
+                ->paginate(5);
+            return $this->success(true,'You have successfully retrieved the list of accounts',$accounts,Response::HTTP_OK,'','');
+        }catch (Exception $exception) {
+            return $this->error(false,$exception->getMessage());
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param AccountRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(AccountRequest $request)
     {
@@ -60,11 +66,18 @@ class AccountController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        try{
+            $account=Account::with(['user','user.address','user.kyc'])
+                ->where('id',$id)
+                ->first();
+            return $this->success(true,'You have successfully retrieved an account details',$account,Response::HTTP_OK,'','');
+        }catch (Exception $exception) {
+            return $this->error(false,$exception->getMessage());
+        }
     }
 
     /**
