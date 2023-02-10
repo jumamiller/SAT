@@ -29,7 +29,11 @@ class AuthController extends Controller
                 //notify
                 $user->notify(new AccountCreation($user));
                 //return response
-                return $this->success(true, 'You have successfully created an account with '.config('app.name.'),[],Response::HTTP_CREATED);
+                return $this->success(
+                    true,
+                    'You have successfully created an account with '.config('app.name.'),
+                    $user,
+                    Response::HTTP_CREATED);
             });
 
         } catch (Exception $exception) {
