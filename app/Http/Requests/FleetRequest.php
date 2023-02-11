@@ -26,7 +26,20 @@ class FleetRequest extends FormRequest
      */
     public function rules()
     {
-        //
+        if ($this->routeIs('Dispatch')) {
+            return self::dispatchVehicle();
+        } else if ($this->routeIs('LoadingFleet')) {
+            return self::loadingOrders();
+        } else {
+            return self::fleet();
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    private function fleet(): array
+    {
         return [
             'driver_id'         =>'required|numeric',
             'name'              =>'required|min:3',
@@ -36,6 +49,28 @@ class FleetRequest extends FormRequest
             'year'              =>'required',
             'capacity'          =>'required',
             'status'            =>'required',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    private function loadingOrders(): array
+    {
+        return [
+            'order_number'  =>'required',
+            'fleet_id'      =>'required',
+            'status'        =>'required'
+        ];
+    }
+    /**
+     * @return string[]
+     */
+    private function dispatchVehicle(): array
+    {
+        return [
+            'fleet_id'      =>'required',
+            'status'        =>'required'
         ];
     }
     protected function failedValidation(Validator $validator): void
