@@ -30,6 +30,8 @@ Route::group(['prefix'=>'v1'], function (){
         Route::prefix('users')->group(base_path('routes/modules/user.php'));
         //transactions
         Route::prefix('transaction')->group(base_path('routes/modules/transaction.php'));
+        //process loan request
+        Route::prefix('loans')->group(base_path('routes/modules/loan.php'));
     });
 
 });

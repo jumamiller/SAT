@@ -73,6 +73,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    /**
+     * @return HasOne
+     */
     public function account(): HasOne
     {
         return $this->hasOne(Account::class);

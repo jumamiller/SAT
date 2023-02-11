@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         try{
-            $users=User::with(['account','address','kyc'])
+            $users=User::with(['account','account.loans','kyc','address'])
                 ->paginate(5);
             return $this->success(true,'You have successfully retrieved the list of users',$users,Response::HTTP_OK,'','');
         }catch (Exception $exception) {

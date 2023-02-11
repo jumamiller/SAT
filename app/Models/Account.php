@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
 {
@@ -17,8 +18,20 @@ class Account extends Model
         "account_limit",
         "status",
     ];
+
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    /**
+     * May have mutliple loans?
+     * @return HasMany
+     */
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
     }
 }
