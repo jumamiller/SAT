@@ -10,6 +10,14 @@ class LoanRepayment extends Model
     use HasFactory;
     protected $fillable=[
         'loan_id',
-        ''
+        'payment_number',
+        'months',
+        'interest',
+        'principal',
+        'remaining_balance'
     ];
+    public function loan()
+    {
+        return $this->belongsTo(Loan::class);
+    }
 }

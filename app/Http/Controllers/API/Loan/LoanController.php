@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoanRequest;
 use App\Models\Account;
 use App\Models\Loan;
+use App\Models\LoanRepayment;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\LoanAwardNotification;
 use App\Traits\ApiResponder;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +26,7 @@ class LoanController extends Controller
     /**
      * Award Loan
      * @param LoanRequest $request
-     * @return \Illuminate\Http\JsonResponse|mixed
+     * @return JsonResponse|mixed
      */
     public function awardLoan(LoanRequest $request): mixed
     {
@@ -51,7 +53,7 @@ class LoanController extends Controller
                     return $this->error(false,'Sorry, loan request could not be processed at this moment.', ResponseAlias::HTTP_FORBIDDEN);
                 }
                 //create
-                Loan::create($validated);
+                $loan=Loan::create($validated);
                 //update account balance
                 Account::where('id',$toAccount->id)
                     ->update([
@@ -71,6 +73,8 @@ class LoanController extends Controller
                 $recipient=User::where('id',$validated['account_id'])->first();
                 //notify
                 $recipient->notify(new LoanAwardNotification($recipient,$transaction));
+                //generate Loan Repayment schedule
+                self::generateLoanRepaymentSchedule($loan);
                 //
                 return $this->success(true,
                     'You have successfully awarded '.$recipient->username.' loan amount KES '.$validated['principal'],
@@ -83,6 +87,82 @@ class LoanController extends Controller
             return $this->error(false,$exception->getMessage());
         }
     }
+
+    /**
+     * Generate Loan
+     * @return JsonResponse|void
+     */
+    public function generateLoanRepaymentSchedule($loan)
+    {
+        // Loan amount
+        $loan_amount = $loan->principal;
+
+        // Number of months
+        $months = $loan->loan_term;
+
+        // Annual interest rate
+        $annual_interest_rate = $loan->interest_rate;
+
+        // Convert to monthly interest rate
+        $monthly_interest_rate = $annual_interest_rate / 12;
+
+        // Payment frequency
+        $frequency = $loan->repayment_frequency; // options: weekly, bi-monthly, monthly
+        //
+
+        // Calculate number of payments based on frequency
+        $payments = $months;
+        switch ($frequency) {
+            case 'WEEKLY':
+                $payments = $months * 4;
+                break;
+            case 'BI_MONTHLY':
+                $payments = $months /2;
+                break;
+            case 'MONTHLY':
+                $payments = $months;
+                break;
+        }
+        // Calculate monthly payment
+        $monthly_payment = $loan_amount * ($monthly_interest_rate / (1 - pow(1 + $monthly_interest_rate, -$payments)));
+
+        // Repayment schedule
+        $repayment_schedule = array();
+        $remaining_balance = $loan_amount;
+        for ($i = 0; $i < $payments; $i++) {
+            $interest = $remaining_balance * $monthly_interest_rate;
+            $principal = $monthly_payment - $interest;
+            $remaining_balance = $remaining_balance - $principal;
+            $repayment_schedule[$i] = array(
+                'payment' => $i + 1,
+                'interest' => $interest,
+                'principal' => $principal,
+                'remaining_balance' => $remaining_balance
+            );
+        }
+
+        //
+        try{
+            foreach ($repayment_schedule as $payment) {
+                $schedule=LoanRepayment::create([
+                    'loan_id' => $loan->id,
+                    'months' => $loan->months,
+                    'payment_number' => $payment['payment'],
+                    'interest' => $payment['interest'],
+                    'principal' => $payment['principal'],
+                    'remaining_balance' => $payment['remaining_balance']
+                ]);
+            }
+        }
+        catch (Exception $exception) {
+            return $this->error(false,$exception->getMessage());
+        }
+    }
+
+    /**
+     * @param LoanRequest $request
+     * @return JsonResponse|mixed
+     */
     public function repayLoan(LoanRequest $request)
     {
         try{

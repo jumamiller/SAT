@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('loan_repayments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('loan_id')->constrained();
+            $table->integer('payment_number');
+            $table->double('months')->nullable();
+            $table->double('principal');
+            $table->double('interest');
+            $table->double('remaining_balance');
             $table->timestamps();
         });
     }

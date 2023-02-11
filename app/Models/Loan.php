@@ -24,4 +24,8 @@ class Loan extends Model
     {
         return $this->belongsTo(Account::class);
     }
+    public function repayment_schedule()
+    {
+        return $this->hasOne(LoanRepayment::class);
+    }
 }
