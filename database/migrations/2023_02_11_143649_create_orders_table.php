@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained();
-            $table->foreignId('fleet_id')->constrained();
+            $table->foreignId('fleet_id')->nullable()->constrained();
             $table->string('order_number');
             $table->double('total_price');
             $table->enum('status',['PENDING','LOADING','DISPATCHED','DELIVERED'])->default('PENDING');

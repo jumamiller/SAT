@@ -19,7 +19,17 @@ Route::group(['prefix'=>'v1'], function (){
     Route::prefix('auth')->group(base_path('routes/modules/auth.php'));
     //protected
     Route::group(['middleware'=>'auth:api'],function(){
-        //get users
+        //users
         Route::prefix('users')->group(base_path('routes/modules/user.php'));
+        //customers
+        Route::prefix('customers')->group(base_path('routes/modules/customer.php'));
+        //address
+        Route::prefix('address')->group(base_path('routes/modules/address.php'));
+        //drivers
+        Route::prefix('drivers')->group(base_path('routes/modules/driver.php'));
+        //fleet
+        Route::prefix('fleet')->group(base_path('routes/modules/fleet.php'));
+        //order
+        Route::prefix('orders')->group(base_path('routes/modules/order.php'));
     });
 });

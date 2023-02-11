@@ -28,10 +28,10 @@ class OrderRequest extends FormRequest
     {
         return [
             'customer_id'   =>'required|numeric',
-            'fleet_id'      =>'required|numeric',
+            'fleet_id'      =>'',
             'order_number'  =>'',
             'total_price'   =>'required',
-            'status'        =>'required'
+            'status'        =>''
         ];
     }
 
