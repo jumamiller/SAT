@@ -24,8 +24,12 @@ class Loan extends Model
     {
         return $this->belongsTo(Account::class);
     }
-    public function repayment_schedule()
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function repayment_schedules()
     {
-        return $this->hasOne(LoanRepayment::class);
+        return $this->hasMany(LoanRepayment::class);
     }
 }
