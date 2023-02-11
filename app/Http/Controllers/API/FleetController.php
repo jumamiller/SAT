@@ -1,31 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\API\User;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Traits\ApiResponder;
-use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends Controller
+class FleetController extends Controller
 {
-    use ApiResponder;
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        try{
-            $users=User::paginate(5);
-            return $this->success(true,'You have successfully retrieved the list of users',$users,Response::HTTP_OK,'','');
-        }catch (Exception $exception) {
-            return $this->error(false,$exception->getMessage());
-        }
+        //
     }
 
     /**

@@ -5,33 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Account extends Model
+class Driver extends Model
 {
     use HasFactory;
     protected $fillable=[
-        "user_id",
-        "account_name",
-        "account_number",
-        "account_balance",
-        "account_limit",
-        "status",
+        'user_id',
+        'license_number',
+        'expiration_date',
+        'license_file_path',
+        'status'
     ];
 
     /**
+     * Customer to user relationship
      * @return BelongsTo
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     /**
-     * May have mutliple loans?
-     * @return HasMany
+     * @return HasOne
      */
-    public function loans()
+    public function fleet(): HasOne
     {
-        return $this->hasMany(Loan::class);
+        return $this->hasOne(Fleet::class);
     }
 }

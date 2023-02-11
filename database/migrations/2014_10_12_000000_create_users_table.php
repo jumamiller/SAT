@@ -23,15 +23,15 @@ return new class extends Migration
             $table->string('phone_number')->unique();
             $table->enum('document_type',['NATIONAL_ID','PASSPORT']);
             $table->string('document_number')->unique();
-            $table->enum('nationality',["KENYAN"]);
+            $table->enum('nationality',["KENYAN","UGANDAN","ETHIOPIAN"]);
             $table->string('password');
             $table->enum('status',['PENDING','ACTIVE','SUSPENDED','REJECTED'])->default('PENDING');
-            $table->enum('iprs_status',['SUCCESS','FAILED','PENDING'])->default('SUCCESS');
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_phone_number_confirmed')->default(false);
             $table->boolean('is_email_address_confirmed')->default(false);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

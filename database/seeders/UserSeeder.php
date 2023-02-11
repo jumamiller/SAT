@@ -25,12 +25,11 @@ class UserSeeder extends Seeder
             'phone_number'  =>'0748730956',
             'document_type'=>'NATIONAL_ID',
             'document_number'=>'12653764',
-            'nationality'   =>'KENYAN',//Upload photo
+            'nationality'   =>'KENYAN',
             'password'      =>Hash::make('123456'),
             'status'        =>'ACTIVE',
             'is_phone_number_confirmed'=>true,
             'is_email_address_confirmed'=>true,
-            'iprs_status'=>'SUCCESS'
         ]);
         $admin->assignRole("ADMIN");
     }

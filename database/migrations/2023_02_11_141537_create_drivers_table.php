@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('drivers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->unique()->constrained();
-            $table->string('account_name');
-            $table->string('account_number');
-            $table->double('account_balance')->default(0);
-            $table->double('account_limit')->default(0);
-            $table->enum('status',['ACTIVE','ON_HOLD','SUSPENDED'])->default('ACTIVE');
+            $table->foreignId('user_id')->constrained();
+            $table->string('license_number');
+            $table->date('expiration_date');
+            $table->string('license_file_path');
+            $table->enum('status',['ACTIVE','EXPIRED','SUSPENDED'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('drivers');
     }
 };

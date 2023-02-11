@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -13,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +35,6 @@ class User extends Authenticatable
         'status',//account can ACTIVE,PENDING,SUSPENDED,REJECTED
         'is_phone_number_confirmed',
         'is_email_address_confirmed',
-        'iprs_status',//what is the IPRS check status
     ];
 
     /**
@@ -55,30 +55,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * One user one KYC data
-     * @return HasOne
-     */
-    public function kyc(): HasOne
-    {
-        return $this->hasOne(KYC::class);
-    }
-
-    /**
-     * A user may hav multiple addresses
-     * @return HasMany
-     */
-    public function address(): HasMany
-    {
-        return $this->hasMany(Address::class);
-    }
-
-    /**
-     * @return HasOne
-     */
-    public function account(): HasOne
-    {
-        return $this->hasOne(Account::class);
-    }
 }

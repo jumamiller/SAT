@@ -7,22 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations
+     * Run the migrations.
+     *
      * @return void
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('country');
-            $table->string('county');
-            $table->string('sub_county');
-            $table->string('location');
-            $table->string('sub_location');
-            $table->string('village');
-            $table->enum('status',['CURRENT','RELOCATED']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('customers');
     }
 };

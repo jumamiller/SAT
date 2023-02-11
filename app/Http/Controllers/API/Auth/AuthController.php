@@ -61,7 +61,7 @@ class AuthController extends Controller
                         'success' =>true,
                         'message' =>'You have successfully logged in',
                         'data'    =>Auth::user(),
-                        'token'   =>Auth::user()->createToken("Pezesha")->accessToken
+                        'token'   =>Auth::user()->createToken("Solutech")->accessToken
                     ]);
             }
             else

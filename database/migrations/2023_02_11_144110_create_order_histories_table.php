@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('loans', function (Blueprint $table) {
+        Schema::create('order_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_id')->constrained();
-            $table->double('principal');
-            $table->double('interest_rate');
-            $table->integer('loan_term');
-            $table->enum('repayment_frequency',['WEEKLY','MONTHLY','BI_MONTHLY']);
+            $table->foreignId('order_id')->constrained();
+            $table->text('comment')->nullable();
+            $table->enum('status',['PENDING','LOADING','DISPATCHED','DELIVERED'])->default('PENDING');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('loans');
+        Schema::dropIfExists('order_histories');
     }
 };
