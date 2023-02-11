@@ -38,7 +38,7 @@ class LoadAndDispatchFleetController extends Controller
      * @param FleetRequest $fleetRequest
      * @return JsonResponse
      */
-    public function loadVehicle(FleetRequest $fleetRequest)
+    public function loadVehicle(FleetRequest $fleetRequest): JsonResponse
     {
         try{
            return DB::transaction(function () use ($fleetRequest){
@@ -47,7 +47,7 @@ class LoadAndDispatchFleetController extends Controller
                $order=Order::where('order_number',$validated['order_number'])->first();
                //check if the fleet with such ID exists and is available
                $fleet=Fleet::where('id',$validated['fleet_id'])
-                   ->AndWhere('status','AVAILABLE')
+                   ->where('status','AVAILABLE')
                    ->first();
                //
                if ($order==null || $fleet==null) {
@@ -83,14 +83,14 @@ class LoadAndDispatchFleetController extends Controller
      * @param FleetRequest $fleetRequest
      * @return JsonResponse|mixed
      */
-    public function dispatchVehicle(FleetRequest $fleetRequest)
+    public function dispatchVehicle(FleetRequest $fleetRequest): mixed
     {
         try{
             return DB::transaction(function () use ($fleetRequest){
                 $validated=$fleetRequest->validated();
                 //check if the fleet with such ID exists and has been loaded
                 $fleet=Fleet::where('id',$validated['fleet_id'])
-                    ->AndWhere('status','LOADING')
+                    ->where('status','LOADING')
                     ->first();
                 //
                 if ($fleet==null) {
@@ -109,7 +109,7 @@ class LoadAndDispatchFleetController extends Controller
                     //update order status
                     $order->update(['status'=>'DISPATCHED']);
                     //send notification
-                    $order->customer->user->notify(new DispatchedOrderNotification($order->customer->user,$fleet));
+                    $order->customer->user->notify(new DispatchedOrderNotification($order->customer->user,$order));
                 }
                 //Update fleet
                 $fleet->update([

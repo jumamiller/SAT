@@ -60,7 +60,6 @@ class FleetRequest extends FormRequest
         return [
             'order_number'  =>'required',
             'fleet_id'      =>'required',
-            'status'        =>'required'
         ];
     }
     /**
@@ -70,7 +69,6 @@ class FleetRequest extends FormRequest
     {
         return [
             'fleet_id'      =>'required',
-            'status'        =>'required'
         ];
     }
     protected function failedValidation(Validator $validator): void
