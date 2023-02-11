@@ -26,7 +26,10 @@ Route::group(['prefix'=>'v1'], function (){
 
     //protected
     Route::group(['middleware'=>'auth:api'],function(){
+        //get users
         Route::prefix('users')->group(base_path('routes/modules/user.php'));
+        //transactions
+        Route::prefix('transaction')->group(base_path('routes/modules/transaction.php'));
     });
 
 });
