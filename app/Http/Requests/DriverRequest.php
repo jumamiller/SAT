@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
-class FleetRequest extends FormRequest
+class DriverRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,18 +26,19 @@ class FleetRequest extends FormRequest
      */
     public function rules()
     {
-        //
         return [
-            'driver_id'         =>'required|numeric',
-            'name'              =>'required|min:3',
-            'registration_number'=>'required',
-            'model'             =>'required',
-            'manufacturer'      =>'required',
-            'year'              =>'required',
-            'capacity'          =>'required',
-            'status'            =>'required',
+            'user_id'           =>'required|numeric',
+            'license_number'    =>'required',
+            'expiration_date'   =>'required',
+            'license_file_path' =>'required',
+            'status'            =>'required'
         ];
     }
+
+    /**
+     * @param Validator $validator
+     * @return void
+     */
     protected function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(response()->json([
