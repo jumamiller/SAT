@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*','https://solutech.millerjuma.co.ke','http://localhost:8080'],
 
     'allowed_origins_patterns' => [],
 
