@@ -43,27 +43,40 @@ class StatisticsController extends Controller
                 ->latest('created_at')
                 ->paginate(5);
             //latest 5 customers
-            $recent_customers=Customer::with(['user'])
-                ->latest('created_at')
-                ->paginate(5);
+            $recent_customers=Customer::with(['user'])->latest('created_at')->paginate(5);
             //get total pending orders
-            $pending_orders=Order::where('status','PENDING')
-                ->count();
+            $pending_orders=Order::where('status','PENDING')->count();
+            //
+            $total_loading_orders=Order::where('status','LOADING')->count();
+            //Dispatched
+            $total_dispatched_orders=Order::where('status','DISPATCHED')->count();
+            //Delivered
+            $total_delivered_orders=Order::where('status','DELIVERED')->count();
             //get available vehicles
-            $available_vehicles=Fleet::where("status","AVAILABLE")
-                ->get()
-                ->count();
+            $available_vehicles=Fleet::where("status","AVAILABLE")->get()->count();
+            //Loading
+            $total_loading_vehicles=Fleet::where("status","LOADING")->get()->count();
+            //
+            $total_on_transit_vehicles=Fleet::where("status","ON_TRANSIT")->get()->count();
             //total customers
             $total_customers=Customer::all()
                 ->count();
             //
             return $this->success(true,'You have successfully dashboard stats',
                 [
+                    'total_pending_orders'=>$pending_orders,
+                    'total_loading_orders'=>$total_loading_orders,
+                    'total_dispatched_orders'=>$total_dispatched_orders,
+                    'total_delivered_orders'=>$total_delivered_orders,
+                    //
+                    'total_available_vehicles'=>$available_vehicles,
+                    'total_loading_vehicles'=>$total_loading_vehicles,
+                    'total_on_transit_vehicles'=>$total_on_transit_vehicles,
+                    //
+                    'total_customers'=>$total_customers,
                     'recent_orders'=>$recent_orders,
                     'recent_customers'=>$recent_customers,
-                    'total_pending_orders'=>$pending_orders,
-                    'available_vehicles'=>$available_vehicles,
-                    'total_customers'=>$total_customers
+                    //
                 ],
                 Response::HTTP_OK,
                 'stats','');
