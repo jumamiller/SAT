@@ -42,10 +42,10 @@ class AccountCreation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Account Successful')
-                    ->line('Hi, ' .$this->user->last_name)
-                    ->line('Your request to join Pezesha has been received. We will notify you once it has been approved '.config('app.name'))
-                    ->action('Notification Action', url('/'))
+                    ->subject('Account Successful')
+                    ->line($this->user->last_name)
+                    ->line('Your request to join Solutech has been received. We will notify you once it has been approved ')
+                    ->action('Login', url('/'))
                     ->line('Thank you for using our application!');
     }
 
