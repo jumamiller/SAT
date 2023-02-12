@@ -37,7 +37,7 @@ class UserController extends Controller
     public function index()
     {
         try{
-            $users=User::with(['roles','customer','customer.addresses'])
+            $users=User::with(['roles','customer','customer.addresses','driver'])
                 ->paginate(5);
             return $this->success(true,'You have successfully retrieved the list of users',
                 $users,

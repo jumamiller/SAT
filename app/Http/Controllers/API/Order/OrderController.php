@@ -43,8 +43,8 @@ class OrderController extends Controller
     public function index()
     {
         try{
-            $users=Order::with(['orderHistories','customer','customer.user','fleet'])
-                ->paginate(5);
+            $users=Order::with(['orderHistories','customer','customer.user','fleet','fleet.driver','fleet.driver.user'])
+                ->paginate(50);
             return $this->success(true,'You have successfully retrieved orders',
                 $users,
                 Response::HTTP_OK,
@@ -107,7 +107,7 @@ class OrderController extends Controller
     public function show($id)
     {
         try{
-            $users=Order::with(['orderHistories','customer','customer.user','fleet'])
+            $users=Order::with(['orderHistories','customer','customer.user','fleet','fleet.driver','fleet.driver.user'])
                 ->where('id',$id)
                 ->first();
             return $this->success(true,'You have successfully retrieved the order details',

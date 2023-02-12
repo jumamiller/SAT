@@ -5,4 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([],function(){
     Route::apiResource('', CustomerController::class);
+    //show
+    Route::get('/{id}',[CustomerController::class,'show']);
 });

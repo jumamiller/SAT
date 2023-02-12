@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FleetRequest;
 use App\Models\Driver;
 use App\Models\Fleet;
+use App\Notifications\DispatchedOrderNotification;
 use App\Traits\ApiResponder;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -40,10 +41,10 @@ class FleetController extends Controller
     public function index()
     {
         try{
-            $users=Fleet::with(['driver','driver.user','order'])
-                ->paginate(5);
+            $fleet=Fleet::with(['driver','driver.user','orders','orders.customer','orders.customer.user'])
+                ->paginate(50);
             return $this->success(true,'You have successfully retrieved fleet',
-                $users,
+                $fleet,
                 Response::HTTP_OK,
                 'fleet','');
         }catch (Exception $exception) {
@@ -98,11 +99,11 @@ class FleetController extends Controller
     public function show($id)
     {
         try{
-            $users=Fleet::with(['driver'])
+            $fleet=Fleet::with(['driver','driver.user','orders','orders.customer','orders.customer.user'])
                 ->where('id',$id)
                 ->first();
             return $this->success(true,'You have successfully retrieved the fleet details',
-                $users,
+                $fleet,
                 Response::HTTP_OK,
                 'fleet details','');
         }catch (Exception $exception) {
@@ -120,10 +121,59 @@ class FleetController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            //only update fields sent with values
-            $fleet=Fleet::where('id',$id)
-                ->update(array_filter($request->all()));
+            $fleet=Fleet::with('orders')
+                ->where('id',$id)
+                ->first();
             //
+            if ($request->input('status')==='LOADING') {
+                //orders are being loaded
+                //update order statuses to load
+                foreach ($fleet->orders as $order){
+                    //update order status
+                    //check if order has already been dispatched
+                    if ($order->status!=='DELIVERED') {
+                        $order->update(['status'=>$request->input('status')]);
+                    }
+                }
+                //update the fleet status to loading
+                $fleet->update(['status'=>$request->input('status')]);
+
+            } else if ($request->input('status')==='ON_TRANSIT') {
+                //orders dispatched
+                //orders are being loaded
+                $fleet=Fleet::with('orders')
+                    ->where('id',$id)
+                    ->first();
+                //update order statuses to load
+                foreach ($fleet->orders as $order){
+                    //update order status
+                    if ($order->status!=='DELIVERED') {
+                        $order->update(['status'=>'DISPATCHED']);
+                        //send email notification
+                        $order->customer->user->notify(new DispatchedOrderNotification($order->customer->user,$order));
+                    }
+                }
+                //update the fleet status to On Transit
+                $fleet->update(['status'=>$request->input('status')]);
+            } else if ($request->input('status')==='AVAILABLE'){
+                //Order delivered
+                //update order statuses to load
+                foreach ($fleet->orders as $order){
+                    //update order status
+                    $order->update(['status'=>'DELIVERED']);
+                }
+                //update the fleet status to On Transit
+                $fleet->update(['status'=>$request->input('status')]);
+            } else {
+                //only update fields sent with values
+                $fleet=Fleet::where('id',$id)
+                    ->update(array_filter($request->all()));
+                //
+                return $this->success(true,'You have successfully updated the fleet details',
+                    $fleet,
+                    Response::HTTP_OK,
+                    'fleet update','');
+            }
             return $this->success(true,'You have successfully updated the fleet details',
                 $fleet,
                 Response::HTTP_OK,

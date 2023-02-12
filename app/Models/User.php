@@ -63,4 +63,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Customer::class);
     }
+
+    /**
+     * @return HasOne
+     */
+    public function driver(): HasOne
+    {
+        return $this->hasOne(Driver::class);
+    }
 }

@@ -99,11 +99,11 @@ class CustomerController extends Controller
     public function show($id)
     {
         try{
-            $users=Customer::with(['user','address'])
+            $customer=Customer::with(['user','orders','orders.fleet','orders.fleet.driver','orders.fleet.driver.user','addresses'])
                 ->where('id',$id)
                 ->first();
             return $this->success(true,'You have successfully retrieved the customer details',
-                $users,
+                $customer,
                 Response::HTTP_OK,
                 'customer details','');
         }catch (Exception $exception) {
