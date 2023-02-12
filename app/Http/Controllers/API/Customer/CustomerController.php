@@ -41,7 +41,7 @@ class CustomerController extends Controller
     public function index()
     {
         try{
-            $users=Customer::with(['user','addresses'])
+            $users=Customer::with(['user','orders','orders.fleet','orders.fleet.driver','orders.fleet.driver.user','addresses'])
                 ->paginate(5);
             return $this->success(true,'You have successfully retrieved the list of customers',
                 $users,

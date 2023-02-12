@@ -37,7 +37,8 @@ class UserController extends Controller
     public function index()
     {
         try{
-            $users=User::paginate(5);
+            $users=User::with(['roles','customer','customer.addresses'])
+                ->paginate(5);
             return $this->success(true,'You have successfully retrieved the list of users',
                 $users,
                 Response::HTTP_OK,
