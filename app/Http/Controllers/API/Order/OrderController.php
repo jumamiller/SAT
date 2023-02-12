@@ -43,10 +43,10 @@ class OrderController extends Controller
     public function index()
     {
         try{
-            $users=Order::with(['orderHistories','customer','customer.user','fleet','fleet.driver','fleet.driver.user'])
+            $orders=Order::with(['orderHistories','customer','customer.user','fleet','fleet.driver','fleet.driver.user'])
                 ->paginate(50);
             return $this->success(true,'You have successfully retrieved orders',
-                $users,
+                $orders,
                 Response::HTTP_OK,
                 'orders','');
         }catch (Exception $exception) {
@@ -107,11 +107,11 @@ class OrderController extends Controller
     public function show($id)
     {
         try{
-            $users=Order::with(['orderHistories','customer','customer.user','fleet','fleet.driver','fleet.driver.user'])
+            $order=Order::with(['orderHistories','customer','customer.user','fleet','fleet.driver','fleet.driver.user'])
                 ->where('id',$id)
                 ->first();
             return $this->success(true,'You have successfully retrieved the order details',
-                $users,
+                $order,
                 Response::HTTP_OK,
                 'order details','');
         }catch (Exception $exception) {
@@ -130,11 +130,11 @@ class OrderController extends Controller
     {
         try{
             //only update fields sent with values
-            $fleet=Order::where('id',$id)
+            $order=Order::where('id',$id)
                 ->update(array_filter($request->all()));
             //
             return $this->success(true,'You have successfully updated the order details',
-                $fleet,
+                $order,
                 Response::HTTP_OK,
                 'order update','');
         }catch (Exception $exception) {

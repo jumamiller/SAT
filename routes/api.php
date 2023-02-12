@@ -31,5 +31,7 @@ Route::group(['prefix'=>'v1'], function (){
         Route::prefix('fleet')->group(base_path('routes/modules/fleet.php'));
         //order
         Route::prefix('orders')->group(base_path('routes/modules/order.php'));
+        //statistics
+        Route::prefix('statistics')->group(base_path('routes/modules/statistics.php'));
     });
 });
