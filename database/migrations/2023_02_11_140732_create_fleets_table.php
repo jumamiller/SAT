@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('fleets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('driver_id')->constrained();
+            $table->foreignId('driver_id')->nullable()->constrained();
             $table->string('name');
             $table->string('registration_number')->unique();
             $table->string('model');

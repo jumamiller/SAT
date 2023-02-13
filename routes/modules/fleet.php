@@ -10,4 +10,6 @@ Route::group([],function(){
     Route::get('/{id}', [FleetController::class,'show']);
     //update
     Route::patch('/{id}', [FleetController::class,'update']);
+    //remove
+    Route::delete('/{id}', [FleetController::class,'destroy']);
 });

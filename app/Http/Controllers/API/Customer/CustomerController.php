@@ -143,10 +143,10 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         try{
-            $users=Customer::where('id',$id)
+            $customer=Customer::where('id',$id)
                 ->delete();
             return $this->success(true,'You have successfully deleted the customer details',
-                $users,
+                $customer,
                 Response::HTTP_OK,
                 'customer deleted','');
         }catch (Exception $exception) {

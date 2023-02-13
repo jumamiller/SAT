@@ -192,10 +192,10 @@ class FleetController extends Controller
     public function destroy($id)
     {
         try{
-            $users=Fleet::where('id',$id)
+            Fleet::where('id',$id)
                 ->delete();
-            return $this->success(true,'You have successfully deleted the fleet',
-                $users,
+            return $this->success(true,'You have successfully deleted the vehicle',
+                [],
                 Response::HTTP_OK,
                 'Fleet deleted','');
         }catch (Exception $exception) {
