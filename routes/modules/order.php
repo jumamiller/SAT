@@ -7,4 +7,6 @@ Route::group([],function(){
     Route::apiResource('', OrderController::class);
     //show
     Route::get('{id}', [OrderController::class,'show']);
+    //update
+    Route::patch('{id}', [OrderController::class,'update']);
 });

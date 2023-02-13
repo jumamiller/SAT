@@ -71,9 +71,9 @@ class OrderController extends Controller
                 //check if fleet exists
                 $fleet=Fleet::find($validated['fleet_id']);
                 //check
-                if ($customer==null || $fleet==null) {
+                if ($customer==null) {
                     return $this->error(false,
-                        "We do not have such customer/fleet at Solutech. Kindly register an account to proceed",
+                        "We do not have such customer at Solutech. Kindly register an account to proceed",
                         Response::HTTP_NOT_FOUND,
                         '',''
                     );
