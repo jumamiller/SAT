@@ -1,8 +1,6 @@
 # Introduction
 
-- This application comprises of two sections:
-   - Task 1 that implements Account Transactions
-   - Task 2: Loan Repayment Scheduling
+- The backend for Solutech APP
 
 ## System Requirements
 - PHP 8.0.2
@@ -73,12 +71,7 @@ See an example below:
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=pezesha
+DB_DATABASE=solutech
 DB_USERNAME=root
 DB_PASSWORD=****
 ```
-
-## How it works
-
-### Task 1:
-
