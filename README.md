@@ -75,3 +75,12 @@ DB_DATABASE=solutech
 DB_USERNAME=root
 DB_PASSWORD=****
 ```
+
+### ERROR "Something went wrong on frontent CORS"
+This error occurs on Localhost, when you encounter this error,
+Go to `http/kernel.php`;
+
+```php
+  \Fruitcake\Cors\HandleCors::class, //uncomment this
+  \App\Http\Middleware\cors::class,//comment this
+```
