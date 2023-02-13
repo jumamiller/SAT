@@ -76,6 +76,13 @@ DB_USERNAME=root
 DB_PASSWORD=****
 ```
 
+### ROle based
+The system is role based, but currently, ADMIN is the only user whose access has been enabled and others might throw an error.
+
+To use our API: use admin credentials shared via email:
+admin@example.com
+123456 as credentials
+
 ### ERROR "Something went wrong on frontent CORS"
 This error occurs on Localhost, when you encounter this error,
 Go to `http/kernel.php`;
