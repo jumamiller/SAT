@@ -35,7 +35,7 @@ trait ApiResponder
      * @param $errors
      * @return JsonResponse
      */
-    protected function error(bool $success,string $message = null, int $code = 500,$meta=null,$errors=null): JsonResponse
+    protected function error(bool $success,string $message = null, int $code = 500,$meta=null,$errors=null)
     {
         return response()->json([
             'success'   =>$success,
