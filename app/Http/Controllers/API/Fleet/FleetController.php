@@ -150,7 +150,8 @@ class FleetController extends Controller
                     if ($order->status!=='DELIVERED') {
                         $order->update(['status'=>'DISPATCHED']);
                         //send email notification
-                        $order->customer->user->notify(new DispatchedOrderNotification($order->customer->user,$order));
+                        //disable for failures google failures
+//                        $order->customer->user->notify(new DispatchedOrderNotification($order->customer->user,$order));
                     }
                 }
                 //update the fleet status to On Transit

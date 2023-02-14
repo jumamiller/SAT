@@ -69,7 +69,7 @@ class OrderController extends Controller
                 //check if customer with such ID exists;
                 $customer=Customer::find($validated['customer_id']);
                 //check if fleet exists
-                $fleet=Fleet::find($validated['fleet_id']);
+                Fleet::find($validated['fleet_id']);
                 //check
                 if ($customer==null) {
                     return $this->error(false,
