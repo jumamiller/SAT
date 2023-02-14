@@ -25,12 +25,12 @@ class AuthController extends Controller
                 //validated
                 $validated=$registerRequest->validated();
                 $validated['password']=Hash::make($validated['password']);
-                dd($validated);
 
                 $user=User::create($validated);
                 //
                 $user->assignRole('CLIENT');
                 //notify
+                dd($user);
                 $user->notify(new AccountCreation($user));
                 //return response
                 return $this->success(
