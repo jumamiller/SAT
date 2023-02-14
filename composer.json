@@ -14,7 +14,8 @@
         "laravel/passport": "^11.6",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "spatie/laravel-permission": "^5.9"
+        "spatie/laravel-permission": "^5.9",
+      "ext-pdo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
