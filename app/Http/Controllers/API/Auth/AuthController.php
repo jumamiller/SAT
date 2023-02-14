@@ -30,8 +30,7 @@ class AuthController extends Controller
                 //
                 $user->assignRole('CLIENT');
                 //notify
-                dd($user);
-                $user->notify(new AccountCreation($user));
+//                $user->notify(new AccountCreation($user));
                 //return response
                 return $this->success(
                     true,
