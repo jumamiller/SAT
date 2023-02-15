@@ -30,7 +30,7 @@ class AuthController extends Controller
                 //
                 $user->assignRole('CLIENT');
                 //notify
-//                $user->notify(new AccountCreation($user));//disable 'cause of mailing fialures
+                $user->notify(new AccountCreation($user));//disable 'cause of mailing fialures
                 //return response
                 return $this->success(
                     true,

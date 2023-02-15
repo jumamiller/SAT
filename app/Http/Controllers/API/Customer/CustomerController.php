@@ -75,7 +75,7 @@ class CustomerController extends Controller
                 }
                 Customer::create($validated);
                 //send notification to customer
-//                $user->notify(new CustomerAccountCreatedNotification($user));//disable fr failures
+                $user->notify(new CustomerAccountCreatedNotification($user));
                 //return response
                 return $this->success(
                     true,
